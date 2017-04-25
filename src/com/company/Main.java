@@ -4,9 +4,33 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
-        
+        DoublyLinkedList list = new DoublyLinkedList();
+        String[] arrayList = new String[list.size()];
+
+        list.addFirst("USA");
+        list.addLast("Germany");
+        list.addFirst("France");
+        list.addLast("England");
+        list.addFirst("Belgium");
+
+        DoublyLinkedList.Node current;
+        arrayList = toArrayFromFirst(list);
+
+        for (int i = 0; i < list.size();i++)
+        {
+            System.out.println(arrayList[i]);
+        }
     }
 
+    public static String[] toArrayFromFirst(DoublyLinkedList list)
+    {
+        String[] stringArray = new String[list.size()];
+        for (int i = 0;i<list.size();i++)
+        {
+            stringArray[i] = list.getElement().toString();
+        }
+        return stringArray;
+    }
     /**
      * Created by Weezy on 4/25/2017.
      */
@@ -131,6 +155,11 @@ public class Main {
             succcessor.setPrev(predessor);
             size--;
             return node.getElement();
+        }
+
+        public E getElement()
+        {
+            return getElement();
         }
     }
 }
