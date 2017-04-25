@@ -6,6 +6,7 @@ public class Main {
 	// write your code here
         DoublyLinkedList list = new DoublyLinkedList();
         String[] arrayList = new String[list.size()];
+        String[] arrayList2 = new String[list.size()];
 
         list.addFirst("USA");
         list.addLast("Germany");
@@ -15,25 +16,45 @@ public class Main {
 
         DoublyLinkedList.Node current;
         arrayList = toArrayFromFirst(list);
+        //arrayList2 = toArrayFromLast(list);
+
 
         for (int i = 0; i < list.size();i++)
         {
             System.out.println(arrayList[i]);
         }
+
+        for (int i = 0; i < list.size();i++)
+        {
+            System.out.println(arrayList2[i]);
+        }
     }
 
     public static String[] toArrayFromFirst(DoublyLinkedList list)
     {
+
         String[] stringArray = new String[list.size()];
-        for (int i = 0;i<list.size();i++)
+        stringArray = list.getAllElements();
+//
+//        for (int i = 0; i<list.size(); i++)
+//        {
+//            stringArray = list.getAllElements();
+//        }
+        return stringArray;
+    }
+
+    /*public static String[] toArrayFromLast(DoublyLinkedList list)
+    {
+        String[] stringArray = new String[list.size()];
+        for (int i = list.size(); i>0; i--)
         {
             stringArray[i] = list.getElement().toString();
         }
         return stringArray;
-    }
-    /**
-     * Created by Weezy on 4/25/2017.
-     */
+    }*/
+
+
+
 
     public static class DoublyLinkedList<E>
     {
@@ -157,9 +178,16 @@ public class Main {
             return node.getElement();
         }
 
-        public E getElement()
+        public String[] getAllElements()
         {
-            return getElement();
+            Node current = header;
+            String[] temp = new String[size()];
+            for(int i=0; i<size();i++)
+            {
+                current = current.getNext();
+                temp[i]= current.element.toString();
+            }
+            return temp;
         }
     }
 }
