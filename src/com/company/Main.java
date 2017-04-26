@@ -5,8 +5,11 @@ public class Main {
     public static void main(String[] args) {
 	// write your code here
         DoublyLinkedList list = new DoublyLinkedList();
+        DoublyLinkedList copyList = new DoublyLinkedList();
         String[] arrayList = new String[list.size()];
         String[] arrayList2 = new String[list.size()];
+        String[] arrayList3 = new String[list.size()];
+
 
         list.addFirst("USA");
         list.addLast("Germany");
@@ -14,19 +17,27 @@ public class Main {
         list.addLast("England");
         list.addFirst("Belgium");
 
-        DoublyLinkedList.Node current;
         arrayList = toArrayFromFirst(list);
-        //arrayList2 = toArrayFromLast(list);
+        arrayList2 = toArrayFromLast(list);
+        arrayList3 = deepCopy(list);
 
-
-        for (int i = 0; i < list.size();i++)
+        System.out.println("Going Forwards:");
+        for (int i = 0; i < list.size()-1;i++)
         {
             System.out.println(arrayList[i]);
         }
-
-        for (int i = 0; i < list.size();i++)
+        System.out.println();
+        System.out.println("Now Backwards:");
+        for (int i = 0; i < list.size()-1;i++)
         {
-            System.out.println(arrayList2[i]);
+           System.out.println(arrayList2[i]);
+        }
+
+        System.out.println();
+        System.out.println("Now for the Copied List");
+        for (int i = 0; i < list.size()-1;i++)
+        {
+            System.out.println(arrayList3[i]);
         }
     }
 
@@ -35,23 +46,25 @@ public class Main {
 
         String[] stringArray = new String[list.size()];
         stringArray = list.getAllElements();
-//
-//        for (int i = 0; i<list.size(); i++)
-//        {
-//            stringArray = list.getAllElements();
-//        }
         return stringArray;
     }
 
-    /*public static String[] toArrayFromLast(DoublyLinkedList list)
+    public static String[] toArrayFromLast(DoublyLinkedList list)
     {
-        String[] stringArray = new String[list.size()];
-        for (int i = list.size(); i>0; i--)
-        {
-            stringArray[i] = list.getElement().toString();
-        }
+        String[] stringArray2 = new String[list.size];
+        stringArray2 = list.getAllElementsB();
+        return stringArray2;
+    }
+
+    public static String[] deepCopy(DoublyLinkedList list)
+    {
+        DoublyLinkedList newList = new DoublyLinkedList();
+        String[] stringArray = new String[list.size];
+        newList.deepCopyList(list);
+
+        stringArray = newList.getAllElements();
         return stringArray;
-    }*/
+    }
 
 
 
@@ -136,12 +149,33 @@ public class Main {
 
         public void addFirst (E e)
         {
-            addBetween(e,header,header.getNext());
+            if (size < 1)
+            {
+                Node<E> newest = new Node<>(e,header,header.next);
+                header.next = newest;
+                newest.next = trailer;
+                trailer.prev = newest;
+                size++;
+            }
+            else
+            {
+                addBetween(e, header, header.getNext());
+            }
         }
 
         public void addLast(E e)
         {
-            addBetween(e,trailer.getPrev(),trailer);
+            if (size < 1)
+            {
+                Node<E> newest = new Node<>(e,header,trailer.prev);
+                header.next = newest;
+                trailer.prev = newest;
+                size++;
+            }
+            else
+            {
+                addBetween(e,trailer.getPrev(),trailer);
+            }
         }
 
         public E removeFirst()
@@ -160,11 +194,11 @@ public class Main {
             return remove(trailer.getPrev());
         }
 
-        private void addBetween(E e, Node predecessor, Node successor)
+        private void addBetween(E e, Node<E> predecessor, Node<E> successor)
         {
              Node<E> newest = new Node<>(e,predecessor,successor);
              predecessor.setNext(newest);
-             successor.setPrev(predecessor);
+             successor.setPrev(newest);
              size++;
         }
 
@@ -181,13 +215,45 @@ public class Main {
         public String[] getAllElements()
         {
             Node current = header;
-            String[] temp = new String[size()];
-            for(int i=0; i<size();i++)
+            String[] temp = new String[size];
+            for(int i=0; i<size;i++)
             {
                 current = current.getNext();
                 temp[i]= current.element.toString();
             }
             return temp;
+        }
+
+        public String[] getAllElementsB()
+        {
+            Node current = trailer;
+            String[] temp = new String[size];
+            int j = 0;
+            for(int i=size-1; i>=0;i--)
+            {
+                current = current.getPrev();
+                temp[j]= current.element.toString();
+                j++;
+            }
+            return temp;
+        }
+
+        public DoublyLinkedList deepCopyList(DoublyLinkedList OGList)
+        {
+            DoublyLinkedList newList = new DoublyLinkedList();
+            Node<E> newNode; Node<E> oldHead;
+            oldHead = OGList.header;
+            
+            oldHead = oldHead.next;
+            while(oldHead.getNext() != null)
+            {
+
+                newList.addLast(oldHead.getElement());
+                oldHead = oldHead.getNext();
+            }
+
+            String[] temp = new String[size];
+            return newList;
         }
     }
 }
